@@ -1,0 +1,16 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/SingerDetail",
+    "pages/SongListDetail",
+    "pages/AllSongList",
+    "pages/AllSingerList",
+    "pages/Search1",
+    "pages/SearchList",
+    "pages/Login",
+    "pages/SongsDetail",
+    "pages/Play",
+    "pages/UserEdit"
+
+  ]
+}

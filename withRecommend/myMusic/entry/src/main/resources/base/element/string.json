@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "音乐网"
+    },
+    {
+      "name": "Label1",
+      "value": "Label1"
+    },
+    {
+      "name": "Label2",
+      "value": "Label2"
+    },
+    {
+      "name": "reason",
+      "value": "Used for recording recognition"
+    }
+  ]
+}

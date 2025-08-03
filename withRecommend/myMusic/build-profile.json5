@@ -1,0 +1,55 @@
+{
+  "app": {
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.2(14)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
+    ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/ruanchaochao/.ohos/config/default_myMusic_eBG9MaGBQC3GAvy7SNgCIANik-b9z_V0Jc-IK65sPgc=.cer",
+          "storePassword": "0000001BB2C5D3388A5B5CA9E0060DE38051A6A5D5EC0D90D53A2BC1E6D666B66C53EE75A9039E763BAA3F",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B1629C37AB14A99D0616B3C5F0B3CADABD64D58111FD4BD3D2F8796BBC7A226D728E952B89BACAB",
+          "profile": "/Users/ruanchaochao/.ohos/config/default_myMusic_eBG9MaGBQC3GAvy7SNgCIANik-b9z_V0Jc-IK65sPgc=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/ruanchaochao/.ohos/config/default_myMusic_eBG9MaGBQC3GAvy7SNgCIANik-b9z_V0Jc-IK65sPgc=.p12"
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

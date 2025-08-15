@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "安装依赖并启动开发服务器",
+			"type": "shell",
+			"command": "npm install && npm run dev",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": [],
+			"args": []
+		}
+	]
+}

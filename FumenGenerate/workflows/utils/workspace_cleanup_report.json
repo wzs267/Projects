@@ -1,0 +1,117 @@
+{
+  "workspace_path": "D:\\Projects\\FumenGenerate",
+  "analysis_date": "2025-08-09",
+  "important_files": [
+    {
+      "path": "main.py",
+      "description": "主程序入口"
+    },
+    {
+      "path": "enhanced_weighted_fusion_model_3_7.pth",
+      "description": "增强权重融合模型 (3:7)"
+    },
+    {
+      "path": "enhanced_weighted_fusion_training_3_7.py",
+      "description": "最新增强权重融合训练脚本"
+    },
+    {
+      "path": "README.md",
+      "description": "项目说明文档"
+    },
+    {
+      "path": "best_weighted_fusion_model.pth",
+      "description": "最佳权重融合模型"
+    },
+    {
+      "path": "final_demo.py",
+      "description": "最终演示程序"
+    },
+    {
+      "path": "large_scale_real_training.py",
+      "description": "大规模真实数据训练"
+    },
+    {
+      "path": "weighted_fusion_large_scale_training_2_8.py",
+      "description": "权重融合大规模训练"
+    },
+    {
+      "path": "deep_beatmap_generator.py",
+      "description": "深度学习谱面生成器"
+    }
+  ],
+  "cleanup_plan": {
+    "keep_files": [
+      {
+        "path": "main.py",
+        "description": "主程序入口"
+      },
+      {
+        "path": "enhanced_weighted_fusion_model_3_7.pth",
+        "description": "增强权重融合模型 (3:7)"
+      },
+      {
+        "path": "enhanced_weighted_fusion_training_3_7.py",
+        "description": "最新增强权重融合训练脚本"
+      },
+      {
+        "path": "README.md",
+        "description": "项目说明文档"
+      },
+      {
+        "path": "best_weighted_fusion_model.pth",
+        "description": "最佳权重融合模型"
+      },
+      {
+        "path": "final_demo.py",
+        "description": "最终演示程序"
+      },
+      {
+        "path": "large_scale_real_training.py",
+        "description": "大规模真实数据训练"
+      },
+      {
+        "path": "weighted_fusion_large_scale_training_2_8.py",
+        "description": "权重融合大规模训练"
+      },
+      {
+        "path": "deep_beatmap_generator.py",
+        "description": "深度学习谱面生成器"
+      }
+    ],
+    "backup_to_archive": [
+      "large_scale_train_with_preprocessed_backup_20250809_183903.py",
+      "large_scale_train_with_preprocessed_backup_20250809_183909.py"
+    ],
+    "duplicate_docs_to_remove": [
+      "神经网络可视化演示.py",
+      "神经网络工作原理详解.md",
+      "随机森林工作原理详解.md"
+    ],
+    "old_training_scripts_to_archive": [
+      "quick_hybrid_train.py",
+      "quick_weighted_fusion_training_2_8.py",
+      "working_train.py"
+    ],
+    "generated_data_to_clean": [
+      "temp_mcz_analysis",
+      "extracted_audio",
+      "__pycache__",
+      "deep_learning_training_history.png",
+      "feature_importance.png",
+      "learning_analysis_results.png",
+      "weighted_fusion_training_results.png",
+      "神经网络权重可视化.png",
+      "神经网络激活模式.png",
+      "processed_4k_features.csv",
+      "test_4k_training_data.csv",
+      "test_4k_beatmaps.json"
+    ]
+  },
+  "recommendations": [
+    "保留enhanced_weighted_fusion_training_3_7.py作为主训练脚本",
+    "归档所有备份文件到archived/目录",
+    "删除重复的文档文件，保留最新版本",
+    "清理生成的临时数据和缓存",
+    "定期备份重要的训练好的模型文件"
+  ]
+}

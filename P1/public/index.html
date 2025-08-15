@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招投标平台</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>招投标平台</h2>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link" onclick="showSection('home')">首页</a>
+                <a href="#" class="nav-link" onclick="showSection('projects')">项目列表</a>
+                <div class="nav-auth" id="nav-auth">
+                    <a href="#" class="nav-link" onclick="showLogin()">登录</a>
+                    <a href="#" class="nav-link" onclick="showRegister()">注册</a>
+                </div>
+                <div class="nav-user" id="nav-user" style="display: none;">
+                    <span class="user-name" id="user-name"></span>
+                    <div class="dropdown">
+                        <button class="dropdown-btn">▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showSection('dashboard')">控制台</a>
+                            <a href="#" onclick="logout()">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>专业的招投标平台</h1>
+                <p>连接项目发布方与专业投标方，高效完成项目合作</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="showRegister()">立即注册</button>
+                    <button class="btn btn-secondary" onclick="showSection('projects')">浏览项目</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>安全可靠</h3>
+                    <p>完善的用户认证和数据加密机制</p>
+                </div>
+                <div class="feature-card">
+                    <h3>高效匹配</h3>
+                    <p>智能匹配系统，快速找到合适的合作伙伴</p>
+                </div>
+                <div class="feature-card">
+                    <h3>透明公正</h3>
+                    <p>公开透明的投标流程，确保公平竞争</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目列表 -->
+        <section id="projects" class="section">
+            <div class="section-header">
+                <h2>项目列表</h2>
+                <div class="filters">
+                    <select id="category-filter">
+                        <option value="">所有类别</option>
+                        <option value="网站开发">网站开发</option>
+                        <option value="移动应用">移动应用</option>
+                        <option value="系统集成">系统集成</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <input type="text" id="search-input" placeholder="搜索项目...">
+                    <button class="btn btn-primary" onclick="searchProjects()">搜索</button>
+                </div>
+            </div>
+            <div id="projects-list" class="projects-grid">
+                <!-- 项目卡片将通过JavaScript动态加载 -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- 分页控件 -->
+            </div>
+        </section>
+
+        <!-- 项目详情页面 -->
+        <section id="project-detail" class="section">
+            <div class="project-detail-container">
+                <div class="project-detail-header">
+                    <button class="btn btn-secondary back-btn" onclick="goBack()">← 返回</button>
+                    <div class="project-status" id="detail-status"></div>
+                </div>
+                
+                <div class="project-detail-content">
+                    <div class="project-info">
+                        <h1 id="detail-title" class="project-title"></h1>
+                        <div class="project-meta-info">
+                            <div class="meta-item">
+                                <span class="meta-label">发布方：</span>
+                                <span id="detail-publisher" class="meta-value"></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">预算：</span>
+                                <span id="detail-budget" class="meta-value budget"></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">截止时间：</span>
+                                <span id="detail-deadline" class="meta-value"></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">项目类别：</span>
+                                <span id="detail-category" class="meta-value"></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">投标数量：</span>
+                                <span id="detail-bid-count" class="meta-value"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-description">
+                            <h3>项目描述</h3>
+                            <p id="detail-description"></p>
+                        </div>
+                        
+                        <div class="project-requirements">
+                            <h3>项目需求</h3>
+                            <p id="detail-requirements"></p>
+                        </div>
+                        
+                        <div class="project-contact">
+                            <h3>联系方式</h3>
+                            <p id="detail-contact"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- 操作按钮区域 - 根据用户身份显示不同内容 -->
+                    <div class="project-actions" id="project-actions">
+                        <!-- 发布方操作 -->
+                        <div id="publisher-actions" class="action-group" style="display: none;">
+                            <button class="btn btn-primary" onclick="editProject()">编辑项目</button>
+                            <button class="btn btn-warning" onclick="closeProject()">关闭项目</button>
+                            <button class="btn btn-info" onclick="showProjectBids()">管理投标</button>
+                        </div>
+                        
+                        <!-- 投标方操作 -->
+                        <div id="bidder-actions" class="action-group" style="display: none;">
+                            <button class="btn btn-primary" onclick="showBidForm()">参与投标</button>
+                            <div id="user-bid-info" style="display: none;">
+                                <p class="bid-status">您已参与此项目投标</p>
+                                <button class="btn btn-secondary" onclick="viewMyBid()">查看我的投标</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 管理员操作 -->
+                        <div id="admin-actions" class="action-group" style="display: none;">
+                            <button class="btn btn-warning" onclick="adminManageProject()">管理项目</button>
+                            <button class="btn btn-danger" onclick="adminDeleteProject()">删除项目</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 投标列表区域 -->
+                    <div class="bids-section" id="bids-section">
+                        <h3>项目投标</h3>
+                        <div id="project-bids-list" class="bids-list">
+                            <!-- 投标列表将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户控制台 -->
+        <section id="dashboard" class="section">
+            <div class="dashboard-nav">
+                <button class="tab-btn active" onclick="showTab('my-projects')">我的项目</button>
+                <button class="tab-btn" onclick="showTab('my-bids')">我的投标</button>
+                <button class="tab-btn" onclick="showTab('profile')">个人资料</button>
+            </div>
+            
+            <div id="my-projects" class="tab-content active">
+                <div class="tab-header">
+                    <h3>我的项目</h3>
+                    <button class="btn btn-primary" onclick="showPublishProject()">发布新项目</button>
+                </div>
+                <div id="user-projects" class="projects-grid">
+                    <!-- 用户项目列表 -->
+                </div>
+            </div>
+            
+            <div id="my-bids" class="tab-content">
+                <h3>我的投标</h3>
+                <div id="user-bids" class="bids-list">
+                    <!-- 用户投标列表 -->
+                </div>
+            </div>
+            
+            <div id="profile" class="tab-content">
+                <h3>个人资料</h3>
+                <form id="profile-form" class="form">
+                    <div class="form-group">
+                        <label for="profile-username">用户名</label>
+                        <input type="text" id="profile-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">邮箱</label>
+                        <input type="email" id="profile-email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">手机号</label>
+                        <input type="tel" id="profile-phone">
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- 发布项目模态框 -->
+    <div id="publish-modal" class="modal">
+        <div class="modal-content large">
+            <span class="close" onclick="closeModal('publish-modal')">&times;</span>
+            <h2 id="project-form-title">发布新项目</h2>
+            <form id="publish-form" class="form vertical-form">
+                <div class="form-group">
+                    <label for="project-title">项目标题 *</label>
+                    <input type="text" id="project-title" required maxlength="100">
+                    <small class="form-hint">请输入项目标题</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-description">项目描述 * (800字以内)</label>
+                    <textarea id="project-description" rows="6" required maxlength="800" placeholder="详细描述您的项目需求..."></textarea>
+                    <small class="form-hint character-count">
+                        <span id="desc-char-count">0</span>/800字
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-images">项目图片 (最多5张，可不上传)</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="project-images" multiple accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('project-images').click()">
+                            选择图片
+                        </button>
+                        <div id="image-preview" class="image-preview-container">
+                            <!-- 图片预览 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-work-deadline">最晚工期要求 *</label>
+                    <input type="datetime-local" id="project-work-deadline" required>
+                    <small class="form-hint">项目完成的最晚时间</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-budget">参考价格（元）</label>
+                    <input type="number" id="project-budget" min="0" placeholder="预估项目价格">
+                    <small class="form-hint">仅供参考，投标方可自由报价</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-bid-deadline">最晚投标截止时间 *</label>
+                    <input type="datetime-local" id="project-bid-deadline" required>
+                    <small class="form-hint">超过此时间将不接受新投标</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-category">项目类别 *</label>
+                    <select id="project-category" required>
+                        <option value="">请选择类别</option>
+                        <option value="网站开发">网站开发</option>
+                        <option value="移动应用">移动应用</option>
+                        <option value="系统集成">系统集成</option>
+                        <option value="设计服务">设计服务</option>
+                        <option value="文案写作">文案写作</option>
+                        <option value="数据处理">数据处理</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-contact">联系方式 *</label>
+                    <textarea id="project-contact" rows="2" required placeholder="请填写联系人、电话、邮箱等信息"></textarea>
+                </div>
+                
+                <div class="form-group publish-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="project-is-public" checked>
+                        <span class="checkmark"></span>
+                        公开项目（所有已登录用户可投标）
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">发布项目</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 投标模态框 -->
+    <div id="bid-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bid-modal')">&times;</span>
+            <h2>提交投标</h2>
+            <form id="bid-form" class="form">
+                <input type="hidden" id="bid-project-id">
+                <div class="form-group">
+                    <label for="bid-amount">投标金额（元）</label>
+                    <input type="number" id="bid-amount" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="bid-deadline">完成时间</label>
+                    <input type="datetime-local" id="bid-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="bid-proposal">投标方案</label>
+                    <textarea id="bid-proposal" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">提交投标</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑项目模态框 -->
+    <div id="edit-project-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal('edit-project-modal')">&times;</span>
+            <h2>编辑项目</h2>
+            <form id="edit-project-form" class="form">
+                <input type="hidden" id="edit-project-id">
+                <div class="form-group">
+                    <label for="edit-project-title">项目标题</label>
+                    <input type="text" id="edit-project-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-description">项目描述</label>
+                    <textarea id="edit-project-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-budget">预算（元）</label>
+                    <input type="number" id="edit-project-budget" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-deadline">截止时间</label>
+                    <input type="datetime-local" id="edit-project-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-requirements">项目需求</label>
+                    <textarea id="edit-project-requirements" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-contact">联系方式</label>
+                    <textarea id="edit-project-contact" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-category">项目类别</label>
+                    <select id="edit-project-category" required>
+                        <option value="">选择类别</option>
+                        <option value="网站开发">网站开发</option>
+                        <option value="移动应用">移动应用</option>
+                        <option value="系统集成">系统集成</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">保存修改</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 投标详情模态框 -->
+    <div id="bid-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bid-detail-modal')">&times;</span>
+            <h2>投标详情</h2>
+            <div id="bid-detail-content">
+                <!-- 投标详情内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 投标管理模态框 -->
+    <div id="bids-management-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal('bids-management-modal')">&times;</span>
+            <h2 id="bids-modal-title">项目投标管理</h2>
+            
+            <div class="bids-management-header">
+                <div class="project-info-summary">
+                    <h3 id="bids-project-title"></h3>
+                    <div class="project-meta-summary">
+                        <span id="bids-project-budget"></span>
+                        <span id="bids-project-deadline"></span>
+                        <span id="bids-project-status"></span>
+                    </div>
+                </div>
+                
+                <div class="bids-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-bids">0</span>
+                        <span class="stat-label">总投标</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="pending-bids">0</span>
+                        <span class="stat-label">待审核</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="accepted-bids">0</span>
+                        <span class="stat-label">已接受</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bids-management-content">
+                <div class="bids-filter">
+                    <select id="bids-status-filter">
+                        <option value="">所有状态</option>
+                        <option value="pending">待审核</option>
+                        <option value="accepted">已接受</option>
+                        <option value="rejected">已拒绝</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="filterBids()">筛选</button>
+                </div>
+                
+                <div id="bids-management-list" class="bids-management-list">
+                    <!-- 投标列表将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新的登录模态框 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>登录</h2>
+                <span class="close" onclick="closeModal('login-modal')">&times;</span>
+            </div>
+            <div id="modal-error-message" class="modal-error-message" style="display: none;"></div>
+            <div class="modal-body">
+                <form id="login-form" class="auth-form">
+                    <div class="user-type-selection">
+                        <label>选择身份：</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="userType" value="publisher" checked>
+                                <span>发布方</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="userType" value="bidder">
+                                <span>接单方</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-phone">手机号</label>
+                        <input type="tel" id="login-phone" placeholder="请输入手机号" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">密码（如已设置）</label>
+                        <input type="password" id="login-password" placeholder="请输入密码（可选）">
+                    </div>
+
+                    <div class="form-group captcha-group">
+                        <label for="login-captcha">图形验证码</label>
+                        <div class="captcha-container">
+                            <input type="text" id="login-captcha" placeholder="请输入验证码" required>
+                            <canvas id="captcha-canvas" width="120" height="40"></canvas>
+                            <button type="button" class="refresh-captcha" onclick="refreshCaptcha()">刷新</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group sms-group">
+                        <label for="login-sms">短信验证码</label>
+                        <div class="sms-container">
+                            <input type="text" id="login-sms" placeholder="请输入短信验证码" required>
+                            <button type="button" id="send-sms-btn" class="send-sms-btn" onclick="sendSMS()">获取验证码</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group agreement">
+                        <label class="checkbox-label-native">
+                            <input type="checkbox" id="agree-terms" name="agree">
+                            <span>我已阅读并同意<a href="#" onclick="showUserAgreement(event)">用户协议</a>和<a href="#" onclick="showPrivacyPolicy(event)">隐私政策</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">登录/注册</button>
+                    
+                    <div class="auth-links">
+                        <a href="#" onclick="showForgotPassword()">忘记密码？</a>
+                        <span class="auth-separator">|</span>
+                        <a href="#" onclick="showRegister()">还没有账号？立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置密码模态框 -->
+    <div id="set-password-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>设置密码</h2>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">为了您的账户安全，请设置登录密码。设置后可直接使用密码登录，无需短信验证。</p>
+                <form id="set-password-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="new-password1">设置密码</label>
+                        <input type="password" id="new-password1" placeholder="请输入密码（6-20位）" required minlength="6" maxlength="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-password2">确认密码</label>
+                        <input type="password" id="new-password2" placeholder="请再次输入密码" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">确认设置</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置职业特长模态框 -->
+    <div id="set-skills-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>设置职业特长</h2>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">请填写您的职业特长，这将帮助系统为您推荐更合适的项目。</p>
+                <form id="set-skills-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="profession">职业</label>
+                        <select id="profession" required>
+                            <option value="">请选择职业</option>
+                            <option value="软件开发">软件开发</option>
+                            <option value="网页设计">网页设计</option>
+                            <option value="移动开发">移动开发</option>
+                            <option value="UI/UX设计">UI/UX设计</option>
+                            <option value="数据分析">数据分析</option>
+                            <option value="系统运维">系统运维</option>
+                            <option value="项目管理">项目管理</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skills">专业技能</label>
+                        <textarea id="skills" placeholder="请描述您的专业技能和经验（如：精通Java、Python，有5年开发经验等）" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience-years">工作经验</label>
+                        <select id="experience-years" required>
+                            <option value="">请选择经验年限</option>
+                            <option value="0-1年">0-1年</option>
+                            <option value="1-3年">1-3年</option>
+                            <option value="3-5年">3-5年</option>
+                            <option value="5-10年">5-10年</option>
+                            <option value="10年以上">10年以上</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">确认设置</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 忘记密码模态框 -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>重置密码</h2>
+                <span class="close" onclick="closeModal('forgot-password-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="forgot-password-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="reset-phone">手机号</label>
+                        <input type="tel" id="reset-phone" placeholder="请输入注册时使用的手机号" required>
+                    </div>
+
+                    <div class="form-group captcha-group">
+                        <label for="reset-captcha">图形验证码</label>
+                        <div class="captcha-container">
+                            <input type="text" id="reset-captcha" placeholder="请输入验证码" required>
+                            <canvas id="reset-captcha-canvas" width="120" height="40"></canvas>
+                            <button type="button" class="refresh-captcha" onclick="refreshResetCaptcha()">刷新</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group sms-group">
+                        <label for="reset-sms">短信验证码</label>
+                        <div class="sms-container">
+                            <input type="text" id="reset-sms" placeholder="请输入短信验证码" required>
+                            <button type="button" id="reset-send-sms-btn" class="send-sms-btn" onclick="sendResetSMS()">获取验证码</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reset-new-password1">新密码</label>
+                        <input type="password" id="reset-new-password1" placeholder="请输入新密码（6-20位）" required minlength="6" maxlength="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reset-new-password2">确认新密码</label>
+                        <input type="password" id="reset-new-password2" placeholder="请再次输入新密码" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">重置密码</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 内容显示模态框 -->
+    <div id="content-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="content-modal-title">内容</h2>
+                <span class="close" onclick="closeContentModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="content-modal-body"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeContentModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
